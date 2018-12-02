@@ -1,6 +1,7 @@
 package boomexample
 
 import boom.system.BoomConfig
+import boom.system.SecureBoomConfig
 import chisel3._
 import example.WithBootROM
 import example.ConfigValName._
@@ -54,6 +55,9 @@ class With64BitSystemBus extends Config((site, here, up) => {
   case SystemBusKey => up(SystemBusKey, site).copy(beatBytes = 8)
 })
 
+class SecureBaseExampleConfig extends Config(
+  new WithBootROM ++ new With64BitSystemBus ++ new SecureBoomConfig)
+
 class BaseExampleConfig extends Config(
   new WithBootROM ++ new With64BitSystemBus ++ new BoomConfig)
 
@@ -62,6 +66,9 @@ class DefaultExampleConfig extends Config(
 
 class SimBlockDeviceConfig extends Config(
   new WithBlockDevice ++ new WithSimBlockDevice ++ new BaseExampleConfig)
+
+class SecureSimBlockDeviceConfig extends Config(
+  new WithBlockDevice ++ new WithSimBlockDevice ++ new SecureBaseExampleConfig)
 
 class BlockDeviceModelConfig extends Config(
   new WithBlockDevice ++ new WithBlockDeviceModel ++ new BaseExampleConfig)
